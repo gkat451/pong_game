@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pong Game - Space Edition</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #0d1b2a 0%, #1b263b 50%, #000000 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        #gameContainer {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #scoreDisplay {
+            margin-bottom: 15px; /* Space between score and canvas */
+            font-family: 'Press Start 2P', 'Arial', sans-serif;
+            font-size: 28px;
+            color: #00ff00; /* Neon green */
+            text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 2px 4px rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 2px solid #00ff00;
+            box-shadow: inset 0 0 5px rgba(0, 255, 0, 0.5);
+            animation: flicker 2s infinite alternate;
+            white-space: nowrap; /* Keeps score in one line */
+        }
+        canvas {
+            border: 2px solid #ffff00;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+        }
+        #toggleButton {
+            margin-top: 15px;
+            padding: 12px 30px;
+            font-size: 18px;
+            font-family: 'Press Start 2P', 'Arial', sans-serif;
+            color: #fff;
+            background: linear-gradient(135deg, #ff6b6b, #e74c3c);
+            border: 3px solid #ffd700;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.8), inset 0 0 5px rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        #toggleButton::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        #toggleButton:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 107, 107, 1), inset 0 0 8px rgba(255, 255, 255, 0.7);
+        }
+        #toggleButton:hover::before {
+            opacity: 0.5;
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+        #toggleButton.running {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.8), inset 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        #toggleButton.running:hover {
+            box-shadow: 0 0 20px rgba(46, 204, 113, 1), inset 0 0 8px rgba(255, 255, 255, 0.7);
+        }
+        /* Space-themed background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="10" cy="10" r="1" fill="white" opacity="0.8"/><circle cx="30" cy="30" r="2" fill="white" opacity="0.6"/><circle cx="70" cy="20" r="1" fill="white" opacity="0.7"/><circle cx="50" cy="80" r="2" fill="white" opacity="0.5"/></svg>') repeat;
+            animation: twinkle 5s infinite linear;
+            z-index: -2;
+        }
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><circle cx="50" cy="50" r="20" fill="#8e44ad" opacity="0.4"/><circle cx="150" cy="150" r="30" fill="#e74c3c" opacity="0.3"/></svg>') no-repeat center;
+            background-size: 50%;
+            z-index: -1;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.5; transform: translateX(0); }
+            50% { opacity: 0.8; transform: translateX(-10px); }
+            100% { opacity: 0.5; transform: translateX(0); }
+        }
+        @keyframes pulseGlow {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.05); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="gameContainer">
+        <div id="scoreDisplay">Player 1: 0 - Player 2: 0</div>
+        <canvas id="pongCanvas" width="800" height="600"></canvas>
+        <button id="toggleButton">Start</button>
+    </div>
+    <script src="pong.js"></script>
+</body>
+</html>
